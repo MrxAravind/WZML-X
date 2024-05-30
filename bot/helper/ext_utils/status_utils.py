@@ -18,7 +18,6 @@ from bot import (
     bot_cache,
     aria2,
 )
-from bot.helper.ext_utils.bot_utils import sync_to_async
 from bot.helper.tele_swi_helper.bot_commands import BotCommands
 from bot.helper.tele_swi_helper.button_build import ButtonMaker
 from bot.helper.themes import BotTheme
@@ -157,11 +156,13 @@ def getSpecificTasks(status, userId):
 
 
 async def getAllTasks(req_status: str, userId):
+    from bot.helper.ext_utils.bot_utils import sync_to_async
     async with task_dict_lock:
         return await sync_to_async(getSpecificTasks, req_status, userId)
 
 
 async def checkUserTasks(userId, maxtask):
+    from bot.helper.ext_utils.bot_utils import sync_to_async
     if tasks := await sync_to_async(getSpecificTasks, "All", userId):
         return len(tasks) >= maxtask
 
@@ -219,6 +220,7 @@ def get_progress_bar_string(pct):
 
 
 async def get_readable_message(sid, is_user, page_no=1, status="All", page_step=1):
+    from bot.helper.ext_utils.bot_utils import sync_to_async
     msg = ""
     button = None
 
